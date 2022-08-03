@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 class Info(NamedTuple):
     speciality: str
     count_agreements: str
+    last_update: str
 
 def get_pages(unique_number: str) -> list[Info]:
     info = list()
@@ -19,10 +20,10 @@ def get_pages(unique_number: str) -> list[Info]:
 
 def get_info(unique_number: str, desc: str, soup: BeautifulSoup) -> Info:
     count_agreements = 0
-    
+    last_update = soup.find("span", {"class": "text-muted"}).text.split("-")[0].strip()
     for user in soup.find_all('tr'):
         for field in user.children:
             if 'class="fio"' in str(field) and field.string == unique_number:
-                return Info(desc, count_agreements)
+                return Info(desc, count_agreements, last_update)
             if 'class="is-agree"' in str(field) and field.string == 'Да': count_agreements += 1
-    return Info(desc, 'Нет в списке')
+    return Info(desc, "Нет в списке", "")

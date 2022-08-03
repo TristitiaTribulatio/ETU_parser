@@ -20,7 +20,7 @@ def add_button(message):
 def rate_reply(message):
     if match(r'\d{3}-\d{3}-\d{3} \d{2}', message.text):
         mess = [
-                f"{info.speciality}\nСогласий выше: {info.count_agreements}\n\n"
+                f"{info.speciality}\nСогласий выше: {info.count_agreements}\n{info.last_update}\n\n"
                 for info in get_pages(message.text)
                 if type(info.count_agreements) == int
                ]
